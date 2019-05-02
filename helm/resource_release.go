@@ -96,6 +96,11 @@ func resourceRelease() *schema.Resource {
 					},
 				},
 			},
+			"environment": {
+				Type:        schema.TypeMap,
+				Optional:    true,
+				Description: "tk custom functionality to inject environment variables into kube",
+			},
 			"set_sensitive": {
 				Type:        schema.TypeSet,
 				Optional:    true,
@@ -583,6 +588,22 @@ func getValues(d *schema.ResourceData) ([]byte, error) {
 		if err := strvals.ParseInto(fmt.Sprintf("%s=%s", name, value), base); err != nil {
 			return nil, fmt.Errorf("failed parsing key %q with value %s, %s", name, value, err)
 		}
+	}
+
+	for _, raw := range d.Get("environment").(*schema.Set).List() {
+		set := raw.(map[string]interface{})
+
+                for key, value := range set {
+
+                    value = nonEscapedCommaRegexp.ReplaceAllString(value, "$1\\,") // escape any non-escaped commas
+
+                    if err := strvals.ParseInto(fmt.Sprintf("%s=%s", key, value), base); err != nil {
+                        return nil, fmt.Errorf("[tk-environment] failed parsing key %q with value %s, %s", name, value, err)
+                    }
+
+                }
+
+
 	}
 
 	for _, raw := range d.Get("set_sensitive").(*schema.Set).List() {
