@@ -597,7 +597,7 @@ func getValues(d *schema.ResourceData) ([]byte, error) {
 
                     value = nonEscapedCommaRegexp.ReplaceAllString(value, "$1\\,") // escape any non-escaped commas
 
-                    if err := strvals.ParseInto(fmt.Sprintf("%s=%s", key, value), base); err != nil {
+                    if err := strvals.ParseInto(fmt.Sprintf("environment.%s=%s", key, value), base); err != nil {
                         return nil, fmt.Errorf("[tk-environment] failed parsing key %q with value %s, %s", name, value, err)
                     }
 
