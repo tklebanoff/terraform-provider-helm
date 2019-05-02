@@ -594,11 +594,12 @@ func getValues(d *schema.ResourceData) ([]byte, error) {
 		set := raw.(map[string]interface{})
 
                 for key, value := range set {
+                    value_s := value.(string)
 
-                    value = nonEscapedCommaRegexp.ReplaceAllString(value, "$1\\,") // escape any non-escaped commas
+                    value_s = nonEscapedCommaRegexp.ReplaceAllString(value_s, "$1\\,") // escape any non-escaped commas
 
-                    if err := strvals.ParseInto(fmt.Sprintf("environment.%s=%s", key, value), base); err != nil {
-                        return nil, fmt.Errorf("[tk-environment] failed parsing key %q with value %s, %s", name, value, err)
+                    if err := strvals.ParseInto(fmt.Sprintf("environment.%s=%s", key, value_s), base); err != nil {
+                        return nil, fmt.Errorf("[tk-environment] failed parsing key %q with value %s, %s", key, value_s, err)
                     }
 
                 }
