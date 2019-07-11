@@ -10,10 +10,13 @@ description: |-
 
 The Helm provider is used to deploy software packages in Kubernetes. The provider needs to be configured with the proper credentials before it can be used.
 
+## Data Sources
+
+* [Data Sources: helm_repository](repository.html)
+
 ## Resources
 
 * [Resource: helm_release](release.html)
-* [Resource: helm_repository](repository.html)
 
 ## Example Usage
 
@@ -83,8 +86,9 @@ The following arguments are supported:
 * `host` - (Required) Set an alternative Tiller host. The format is host:port. Can be sourced from `HELM_HOST` environment variable.
 * `home` - (Required) Set an alternative location for Helm files. By default, these are stored in `$HOME/.helm`. Can be sourced from `HELM_HOME` environment variable.
 * `namespace` - (Optional) Set an alternative Tiller namespace. Defaults to `kube-system`.
+* `init_helm_home` - (Optional) Initialize Helm home directory configured by the `home` attribute if it is not already initialized, defaults to true.
 * `install_tiller` - (Optional) Install Tiller if it is not already installed. Defaults to `true`.
-* `tiller_image` - (Optional) Tiller image to install. Defaults to `gcr.io/kubernetes-helm/tiller:v2.11.0`.
+* `tiller_image` - (Optional) Tiller image to install. Defaults to `gcr.io/kubernetes-helm/tiller:v2.14.1`.
 * `service_account` - (Optional) Service account to install Tiller with. Defaults to `default`.
 * `automount_service_account_token` - (Optional) Auto-mount the given service account to tiller. Defaults to `true`.
 * `override` - (Optional) Override values for the Tiller Deployment manifest. Defaults to `true`.
